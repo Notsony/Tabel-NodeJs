@@ -50,13 +50,42 @@ db.connect((err) => {
     })
 
     //untuk delete data
-    app.post("/hapus", (req,res) => {
-        const deleteSql = `DELETE FROM mahasiswa(id, nama, kelas) WHERE mahasiswa.id ='${req.body.id}';`
+    app.get("/delete/:id", function(req, res) {
+          const deletesql = `DELETE FROM mahasiswa(id, nama, kelas) WHERE id.mahasiswa = '${req.params.id}';`
+          db.query(deletesql, [id], function (err, data) {
+          if (err) throw err;
+          console.log(data.affectedRows + " record(s) updated");
+        });
+        alert("Data berhasil dihapus!!")
+        res.redirect("/");
+        
+      });
+
+    /*app.delete("/hapus/:id", (req,res) => {
+        const deleteSql = `DELETE FROM mahasiswa WHERE id = '${req.params.id}';`
         db.query(deleteSql, (err, result) => {
-            if (err) throw err
-            res.redirect("/")
+            if (!err){
+                alert("Data berhasil dihapus!!");
+            }
+            else
+            console.log(err)
         })
-    })
+    })*/
+   
+    //delete data dengan AJAX
+    /*$('#delete').on('click', function() { 	 
+        if (confirm("Yakin mau menghapus data ini?"))         
+        { 		    
+            $.ajax({ 			  
+                url: '/ressources/t/<%= ressource._id %>', 			  
+                method: 'DELETE', 			
+            }) 			  
+            .done(function() { 			    
+                console.log('deleted'); 			    
+                window.location.reload(true); 		  
+            });         
+        } 
+    }); */
 })
 
 app.listen(8000, () => {
